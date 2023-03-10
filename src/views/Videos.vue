@@ -1,22 +1,146 @@
 <template>
-  <ion-list>
-    <ion-list-header>
-      Videos
-    </ion-list-header>
-    <ion-item v-for="video in videos" :key="video.id">
-      <ion-avatar slot="start">
-        <ion-skeleton-text></ion-skeleton-text>
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ video.title }}</h2>
-        <p>{{ video.description }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-content>
+    <ion-refresher slot="fixed" @ion-refresh="refresh" id="refresher">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list id="skeleton" v-if="loading">
+      <ion-list-header>
+        <ion-skeleton-text animated style="width: 80px"></ion-skeleton-text>
+      </ion-list-header>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+    <ion-list v-else>
+      <ion-list-header>
+        Videos
+      </ion-list-header>
+      <ion-item v-for="video in videos" :key="video.id">
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ video.title }}</h2>
+          <p>{{ video.description }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </template>
 
 <script>
-import {IonAvatar, IonItem, IonLabel, IonList, IonListHeader} from "@ionic/vue";
+import {
+  IonAvatar,
+  IonContent,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonRefresher,
+  IonRefresherContent, IonSkeletonText
+} from "@ionic/vue";
 import casteaching from "@acacha/casteaching";
 const api = casteaching({baseUrl: 'http://casteachingbayo.test/api/'})
 
@@ -27,34 +151,35 @@ export default {
     IonItem,
     IonListHeader,
     IonAvatar,
-    IonLabel
+    IonLabel,
+    IonRefresher,
+    IonRefresherContent,
+    IonContent,
+    IonSkeletonText,
+
   },
   data() {
     return {
-      videos: [
-        {
-          id: 1,
-          title: "Ubuntu 101",
-          description: "Here description",
-          url: "https://www.youtube.com/embed/a4ez0CcEHV4",
-        },
-        {
-          id: 2,
-          title: "Ubuntu 102",
-          description: "Here description",
-          url: "https://www.youtube.com/embed/a4ez0CcEHV4",
-        },
-        {
-          id: 3,
-          title: "Ubuntu 103",
-          description: "Here description",
-          url: "https://www.youtube.com/embed/a4ez0CcEHV4",
-        }
-      ]
+      videos: [],
+      loading: true,
+
     }
   },
   async created() {
-    this.videos = await api.videos()
+    await this.fetchVideos()
+    this.loading = false
+  },
+  mounted() {
+    this.refresher = document.getElementById('refresher')
+  },
+  methods: {
+    async refresh() {
+      await this.fetchVideos()
+      this.refresher.complete()
+    },
+    async fetchVideos() {
+      this.videos = await api.videos()
+    }
   }
 }
 </script>
