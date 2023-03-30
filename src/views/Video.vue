@@ -17,7 +17,9 @@
       </ion-header>
 
       <div id="container">
-        <iframe id="video" :src="video.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe id="video" :src="video.url" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
         <ion-card>
           <ion-card-header>
             <ion-card-title>{{ video.title }}</ion-card-title>
@@ -35,20 +37,18 @@
 
 <script>
 
-import casteaching from '@acacha/casteaching'
-const api = casteaching({baseUrl: 'http://casteachingbayo.test/api/'})
 
 import {
   IonButtons,
   IonCardHeader, IonCardSubtitle, IonCardTitle,
-  IonCard,
-  IonContent,
   IonCardContent,
+  IonContent,
   IonHeader,
   IonMenuButton,
   IonPage,
   IonTitle,
-  IonToolbar
+  IonToolbar, IonCard
+
 } from '@ionic/vue';
 
 export default {
@@ -56,12 +56,11 @@ export default {
   components: {
     IonButtons,
     IonContent,
-    IonCard,
     IonHeader,
     IonMenuButton,
     IonPage,
     IonTitle,
-    IonToolbar,
+    IonToolbar,IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
@@ -69,12 +68,16 @@ export default {
   },
   data() {
     return {
-      video: {}
+      video: {},
     }
   },
 
   async created() {
-    this.video = await api.video.show(this.$route.params.id)
+    try {
+      this.video = await this.casteaching.video.show(this.$route.params.id)
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 </script>

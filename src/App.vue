@@ -32,109 +32,123 @@
 
 <script>
 import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import store from "@/store";
 
 export default defineComponent({
   name: 'App',
   components: {
-    IonApp, 
-    IonContent, 
-    IonIcon, 
-    IonItem, 
-    IonLabel, 
-    IonList, 
-    IonListHeader, 
-    IonMenu, 
-    IonMenuToggle, 
-    IonNote, 
-    IonRouterOutlet, 
+    IonApp,
+    IonContent,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonListHeader,
+    IonMenu,
+    IonMenuToggle,
+    IonNote,
+    IonRouterOutlet,
     IonSplitPane,
   },
+  data() {
+    return {
+      appPages: [],
+      selectedIndex: null
+    }
+  },
+  created() {
+    this.emitter.on('login', () => {
+      this.setAppPages()
+    });
+    this.emitter.on('logout', () => {
+      this.setAppPages()
+    });
+  },
+  async mounted() {
+    this.setAppPages()
+  },
+
   setup() {
-    const selectedIndex = ref(0);
-    const appPages = [
-      {
-        title: 'User Profile',
-        url: '/user',
+
+    const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+
+    const route = useRoute();
+
+    return {
+      labels,
+      archiveOutline,
+      archiveSharp,
+      bookmarkOutline,
+      bookmarkSharp,
+      heartOutline,
+      heartSharp,
+      mailOutline,
+      mailSharp,
+      paperPlaneOutline,
+      paperPlaneSharp,
+      trashOutline,
+      trashSharp,
+      warningOutline,
+      warningSharp,
+      isSelected: (url) => url === route.path ? 'selected' : ''
+    }
+  },
+  methods: {
+    async setAppPages() {
+      this.selectedIndex = 0;
+      this.appPages = []
+      const user = await store.get('user')
+      if (user) {
+        this.appPages.push({
+          title: 'Dashboard',
+          url: '/dashboard',
+          iosIcon: mailOutline,
+          mdIcon: mailSharp
+        })
+        this.appPages.push({
+          title: 'User Profile',
+          url: '/user',
+          iosIcon: mailOutline,
+          mdIcon: mailSharp
+        })
+      }
+
+      if (!user) {
+        this.appPages.push({
+          title: 'Login',
+          url: '/login',
+          iosIcon: mailOutline,
+          mdIcon: mailSharp
+        })
+      } else this.appPages.push({
+        title: 'Logout',
+        url: '/logout',
         iosIcon: mailOutline,
         mdIcon: mailSharp
-      },
-      {
-        title: 'Login',
-        url: '/login',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
-      },
-      {
+      })
+      this.appPages.push({
         title: 'Video 1',
         url: '/videos/1',
         iosIcon: mailOutline,
         mdIcon: mailSharp
-      },
-      {
+      })
+      this.appPages.push({
         title: 'Videos',
         url: '/videos',
         iosIcon: paperPlaneOutline,
         mdIcon: paperPlaneSharp
-      },
-      {
-        title: 'Favorites',
-        url: '/folder/Favorites',
-        iosIcon: heartOutline,
-        mdIcon: heartSharp
-      },
-      {
-        title: 'Archived',
-        url: '/folder/Archived',
-        iosIcon: archiveOutline,
-        mdIcon: archiveSharp
-      },
-      {
-        title: 'Trash',
-        url: '/folder/Trash',
-        iosIcon: trashOutline,
-        mdIcon: trashSharp
-      },
-      {
-        title: 'Spam',
-        url: '/folder/Spam',
-        iosIcon: warningOutline,
-        mdIcon: warningSharp
+      })
+      const path = window.location.pathname;
+      if (path !== undefined) {
+        this.selectedIndex = this.appPages.findIndex(page => page.url.toLowerCase() === path.toLowerCase());
       }
-    ];
-    const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-    
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
-    
-    const route = useRoute();
-    
-    return { 
-      selectedIndex,
-      appPages, 
-      labels,
-      archiveOutline, 
-      archiveSharp, 
-      bookmarkOutline, 
-      bookmarkSharp, 
-      heartOutline, 
-      heartSharp, 
-      mailOutline, 
-      mailSharp, 
-      paperPlaneOutline, 
-      paperPlaneSharp, 
-      trashOutline, 
-      trashSharp, 
-      warningOutline, 
-      warningSharp,
-      isSelected: (url) => url === route.path ? 'selected' : ''
     }
   }
 });
+
 </script>
 
 <style scoped>

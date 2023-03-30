@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import mitt from 'mitt';
+const emitter = mitt();
 import router from './router';
 
 import { IonicVue } from '@ionic/vue';
@@ -22,11 +24,17 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import casteaching from "@acacha/casteaching";
+
+
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
   
 router.isReady().then(() => {
-  app.mount('#app');
+  app.config.globalProperties.emitter = emitter;
+  app.config.globalProperties.casteaching = casteaching({baseUrl:'https://casteaching.joanbayo.me/api'});
+  app.mount('#app')
 });
+
